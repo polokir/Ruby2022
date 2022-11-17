@@ -2,6 +2,7 @@ require 'date'
 
 class Student
   attr_accessor :surname,:group,:geometryMark,:algebraMark,:infoMark
+  attr_reader :avarageMark
 
   def initialize(surname,group,geometryMark,algebraMark,infoMark)
     @surname=surname
@@ -9,7 +10,7 @@ class Student
     @geometryMark=geometryMark
     @algebraMark=algebraMark
     @infoMark=infoMark
-    @avarageMark = (geometryMark+algebraMark+infoMark)/3
+    @avarageMark = ((geometryMark+algebraMark+infoMark)/3.0).to_f
   end
 end
 
@@ -34,21 +35,23 @@ class Session
         count+=1
     end
     end
-    return count/@studentsList.count
+    percentage= count/@studentsList.count
+    printf ("Percentage of 4 and 5 " +percentage.to_s)
+    return percentage
   end
 
   def debtDisplayer
     @studentsList.each do |student|
       if student.geometryMark<3
-        printf(student.surname + " has a debt geometry")
+        printf(student.surname + " has a debt geometry" +"\n")
       end
 
       if student.algebraMark<3
-        printf(student.surname + " has a debt algebra")
+        printf(student.surname + " has a debt algebra" +"\n")
       end
 
       if student.infoMark<3
-        printf(student.surname + " has a debt info")
+        printf(student.surname + " has a debt info" +"\n")
       end
     end
   end
@@ -57,14 +60,35 @@ class Session
   def maxMark
     @studentsList.each do |student|
       m1=[student.geometryMark,student.algebraMark,student.infoMark].max
-      printf(student.surname + "the highest mark" + m1.to_s)
+      printf(student.surname + "the highest mark " + m1.to_s + "\n")
     end
   end
 
   def sortAvarage
-    @studentsList.sort_by {|student| student.avarageMark }
+    @studentsList=@studentsList.sort_by {|student| student.avarageMark}
+    @studentsList=@studentsList.reverse
     @studentsList.each do |student|
-      printf(student.group + " " + student.avarageMark + "\n")
+      printf(student.group + " " + student.avarageMark.to_s + "\n")
     end
   end
 end
+
+ss=Session.new("07.12.2021")
+ss.addStudent(Student.new("Petrov","P-01",5,3,5))
+ss.addStudent(Student.new("Ivanov","P-02",4,4,4))
+ss.addStudent(Student.new("Negrov","P-03",5,5,3))
+ss.addStudent(Student.new("Belov","P-04",3,3,2))
+ss.addStudent(Student.new("Pupkin","P-05",2,4,5))
+ss.addStudent(Student.new("Zalupkin","P-06",1,5,5))
+ss.addStudent(Student.new("Pechkin","P-07",4,3,4))
+
+# ss.addStudent(Student.new("Vasylenko","P-07",4,4,4))
+# ss.addStudent(Student.new("Sardelko","P-07",4,4,4))
+# ss.addStudent(Student.new("Yurchenko","P-07",4,4,4))
+
+# p ss.debtDisplayer
+# p ss.maxMark
+p ss.sortAvarage
+
+
+
